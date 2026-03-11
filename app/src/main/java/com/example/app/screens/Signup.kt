@@ -30,22 +30,26 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
     var phNumber by remember { mutableStateOf("") }
     var cfmPassword by remember { mutableStateOf("") }
 
-
     fun isValidEmail (email:String): Boolean{
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     fun isValidName (name:String): Boolean{
-        return name.isBlank() &&name.all { it.isWhitespace() }
+        return name.isNotBlank() && name.all { it.isLetter() || it.isWhitespace() }
     }
 
-    /*fun isValidEmail (email:String): Boolean{
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    fun isValidPhoneNumber (phNumber:String): Boolean{
+        return phNumber.length == 10 && phNumber.all { it.isDigit() }
     }
 
-    fun isValidEmail (email:String): Boolean{
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }*/
+    fun isValidPassword(password: String, cfmPassword: String): Boolean {
+        return password.isNotEmpty() && password == cfmPassword
+    }
+
+    val canRegister = isValidName(name) &&
+            isValidEmail(email) &&
+            isValidPhoneNumber(phNumber) &&
+            isValidPassword(password, cfmPassword)
 
     Column(
         modifier = Modifier
@@ -81,7 +85,7 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
         InputLabel("Phone Number")
         TextField(value = phNumber, onValueChange = { phNumber = it },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("John Doe") })
+            placeholder = { Text("612-111-1111") })
 
         InputLabel("Password")
         TextField(value = password, onValueChange = { password = it },
@@ -99,6 +103,7 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
 
         Button(
             onClick = { navController.navigate("welcome") },
+            enabled = canRegister,
             modifier = Modifier.fillMaxWidth().padding(top = 40.dp).height(55.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4C49A2))
         ) {
