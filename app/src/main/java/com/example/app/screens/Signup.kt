@@ -27,6 +27,25 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var phNumber by remember { mutableStateOf("") }
+    var cfmPassword by remember { mutableStateOf("") }
+
+
+    fun isValidEmail (email:String): Boolean{
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun isValidName (name:String): Boolean{
+        return name.isBlank() &&name.all { it.isWhitespace() }
+    }
+
+    /*fun isValidEmail (email:String): Boolean{
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun isValidEmail (email:String): Boolean{
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }*/
 
     Column(
         modifier = Modifier
@@ -49,13 +68,34 @@ fun SignupScreen(navController: NavHostController, modifier: Modifier = Modifier
         Text(text = "Join Little Drop and start organized", fontSize = 16.sp, color = Color(0xFF757575))
 
         InputLabel("Full Name")
-        TextField(value = name, onValueChange = { name = it }, modifier = Modifier.fillMaxWidth(), placeholder = { Text("John Doe") })
+        TextField(value = name, onValueChange = { name = it },
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text("John Doe") })
 
         InputLabel("Email Address")
-        TextField(value = email, onValueChange = { email = it }, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), placeholder = { Text("name@example.com") })
+        TextField(value = email, onValueChange = { email = it },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            placeholder = { Text("name@example.com") })
+
+        InputLabel("Phone Number")
+        TextField(value = phNumber, onValueChange = { phNumber = it },
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text("John Doe") })
 
         InputLabel("Password")
-        TextField(value = password, onValueChange = { password = it }, modifier = Modifier.fillMaxWidth(), visualTransformation = PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), placeholder = { Text("••••••••") })
+        TextField(value = password, onValueChange = { password = it },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            placeholder = { Text("••••••••") })
+
+        InputLabel("Confirm Password")
+        TextField(value = cfmPassword, onValueChange = { cfmPassword = it },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            placeholder = { Text("••••••••") })
 
         Button(
             onClick = { navController.navigate("welcome") },
